@@ -1,0 +1,51 @@
+<!-- post_detail.html -->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/BOARD_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/write_style.css' %}">
+{% endblock %}
+{% block content %}
+
+    <h1>공지사항</h1>
+    <!-- 현재 글 -->
+    <div class="page_view">
+        <div class="titlevox">
+            <div class="subject">
+                <span>{{ notice.title }}</span>
+            </div>
+         </div>
+
+     <div>
+        <p>{{ notice.content }}</p>
+
+     </div>
+
+        {% if user.is_authenticated and user == notice.author %}
+            <form method="post" action="{% url 'notice_delete' pk=notice.pk %}">
+                {% csrf_token %}
+                <button type="submit">게시물 삭제</button>
+            </form>
+        {% endif %}
+     </div>
+
+
+    <div  class="bottom_list">
+        <ul>
+            <li>
+                 {% if previous_notice %}
+                    <a href="{% url 'notice_detail' previous_notice.id %}"><strong>▲ 윗글</strong>{{ previous_notice.title }}</a>
+                {% endif %}
+            </li>
+            <li>
+                {% if next_notice %}
+                    <a href="{% url 'notice_detail' next_notice.id %}"><strong>▼ 아랫글</strong>{{ next_notice.title }}</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+    </div>
+{% endblock %}
+
+

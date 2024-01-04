@@ -1,0 +1,153 @@
+<!--직업정보-->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/job_style.css' %}">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+{% endblock %}
+{% block content %}
+
+            <h1>직업정보</h1>
+            <div id="search_tab">
+                <label>검색</label>
+                <select id="searchJobCd" name="searchJobCd">
+                  <option value="">전체</option>
+                  <option value="0">경영·사무·금융·보험직</option>
+                  <option value="1">연구직 및 공학 기술직</option>
+                  <option value="2">교육·법률·사회복지·경찰·소방직 및 군인</option>
+                  <option value="3">보건·의료직</option>
+                  <option value="4">예술·디자인·방송·스포츠직</option>
+                  <option value="5">미용·여행·숙박·음식·경비·청소직</option>
+                  <option value="6">영업·판매·운전·운송직</option>
+                  <option value="7">건설·채굴직</option>
+                  <option value="8">설치·정비·생산직</option>
+                  <option value="9">농림어업직</option>
+                </select>
+                <input type="text" name="input_search" id="input_search">
+                <button id="search_btn" type="button">검 색</button>
+            </div>
+            <div id="job_container">
+                <ui id="job_container_content"> </ui>
+            </div>
+            <div id="authorship"><p>❮출처:커리어넷❯</p></div></ui>
+            <div id="pagebutton">
+                <ul><button id="pagebutton_previous">&#10094;이전</button></ul>
+                <ul><a id="pagebutton_this"></a></ul>
+                <ul><button id="pagebutton_next">다음&#10095;</button></ul>
+            </div>
+{% endblock %}
+{% block js %}
+        <script>
+var pageIndex = 1;
+var totalpage;
+$(document).ready(function() {
+            search_ajax();
+
+});
+$("#input_search").on('keydown',function(event) {
+        if (event.keyCode === 13) {
+            pageIndex = 1;
+            search_ajax();
+        }
+});
+$("#search_btn").click(function() {
+       pageIndex = 1;
+       search_ajax();
+});
+function search_ajax(){
+
+      $.ajax({
+                    url:'{% url 'job_search' %}',
+                    dataType:'json',
+                    type:'POST',
+                    data:{'pageIndex':pageIndex, 'search_value':$("#input_search").val(), 'searchJobCd':$("#searchJobCd").val()},
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    success:function(json){
+                        datalist(json.value, json.search_value, json.searchJobCd);
+                        pageIndex = json.pageIndex;
+                        pagingbutton(json.value.count, json.value.pageSize);
+                    },
+                    error : function(result){
+                        alert('정보를 불러오지 못했습니다');
+                    }
+            });
+}
+function datalist(value, search_value, searchJobCd) {
+    var job_container_content = document.getElementById("job_container_content");
+    job_container_content.innerHTML = '';
+    for (var i = 0; i < value['jobs'].length; i++ ) {
+        job_container_content.innerHTML +=
+        '<li>' +
+        '<a href=' + "job_detail/" + pageIndex + '&' + value['jobs'][i].job_cd + '&' + search_value + '&' + searchJobCd + '>' +
+        '<h3>' + value['jobs'][i].job_nm + '</h3>' +
+        '<div class="job_container_info">' +
+        '<div><p>연봉</p>' + wage_data(i) + '</div>' +
+        '<div><p>전망</p>' + wage_data(i) + '</div>'+
+        '</div></a></li>';
+    }
+    function wage_data(i) {
+        if(value['jobs'][i].wage == undefined) {
+            return '-';
+        } else {
+            return value['jobs'][i].wage;
+        }
+    }
+    function wage_data(i) {
+        if(value['jobs'][i].wage == undefined) {
+            return '-';
+        } else {
+            return value['jobs'][i].wage;
+        }
+    }
+}
+function pagingbutton(count, pagesize) {
+    totalpage = (count / pagesize);
+    var pagebutton_previous = document.getElementById("pagebutton_previous");
+    var pagebutton_this = document.getElementById("pagebutton_this");
+    var pagebutton_next = document.getElementById("pagebutton_next");
+    pagebutton_previous.style.display = "none";
+    pagebutton_next.style.display = "none";
+    if (pageIndex > 1) {
+        pagebutton_previous.style.display = "block";
+    }
+    pagebutton_this.innerHTML = pageIndex;
+    if (pageIndex < totalpage){
+        pagebutton_next.style.display = "block";
+    }
+}
+$("#pagebutton_next").click(function() {
+    if (pageIndex < totalpage) {
+        pageIndex++;
+        search_ajax();
+    }
+
+});
+$("#pagebutton_previous").click(function() {
+    if (pageIndex > 1) {
+        pageIndex--;
+        search_ajax();
+    }
+
+});
+function adjustMainMinWidth() {
+            var job_container = document.getElementById('job_container');
+            var search_tab = document.getElementById('search_tab');
+            var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+
+            if (windowWidth < 1000) {
+                job_container.style.width = '600px';
+            } else if (windowWidth > 1500) {
+                job_container.style.width = '1100px';
+            }
+            else {
+                job_container.style.width = '100%';
+            }
+        }
+
+        window.addEventListener('resize', adjustMainMinWidth);
+
+        window.addEventListener('load', adjustMainMinWidth);
+        </script>
+{% endblock %}

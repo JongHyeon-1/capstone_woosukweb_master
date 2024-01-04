@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div id="profile-container">
+        <h2>회원 정보</h2>
+        <div>
+            <strong>사용자 ID:</strong> {{ user.username }}
+        </div>
+        <div>
+            <strong>사용자명:</strong> {{ user.name }}
+        </div>
+        <div>
+            <strong>휴대전화번호:</strong> {{ user.phone_number }}
+        </div>
+        <div>
+            <strong>이메일:</strong> {{ user.email }}
+        </div>
+        <div>
+            <strong>성별:</strong> {{ user.wk_sex}}
+        </div>
+        <button id="edit-profile-btn"><a href="{% url 'edit_profile' %}">수정하기</a></button>
+    </div>
+{% endblock %}

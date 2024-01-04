@@ -1,0 +1,128 @@
+<!--청년제도상세-->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/youthpolicy_detail_style.css' %}">
+{% endblock %}
+{% block content %}
+
+            <h1>청년제도</h1>
+            <div  id="policy_box1">
+            <table>
+		<colgroup>
+			<col style="width: 150px">
+			<col style="width: auto,">
+			<col style="width: 140px">
+			<col style="width: 20%">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th scope="row">정책명</th>
+				<td colspan="3">{{board.polyBizSjnm}}</td>
+			</tr>
+            <tr>
+				<th scope="row">지원내용</th>
+				<td colspan="3">{{board.sporCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">지원규모</th>
+				<td colspan="3">{{board.sporScvl}}</td>
+			</tr>
+            <tr>
+				<th scope="row">정책소개</th>
+				<td colspan="3">{{board.polyItcnCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">운영기간</th>
+				<td>{{board.bizPrdCn}}</td>
+                <th scope="row">신청기간</th>
+				<td>{{board.rqutPrdCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">연령</th>
+				<td colspan="3">{{board.ageInfo}}</td>
+			</tr>
+            <tr>
+				<th scope="row">학력요건</th>
+				<td>{{board.accrRqisCn}}</td>
+                <th scope="row">전공요건</th>
+				<td>{{board.majrRqisCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">취업상태</th>
+				<td>{{board.empmSttsCn}}</td>
+                <th scope="row">특화분야</th>
+				<td>{{board.splzRlmRqisCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">거주지및소득조건</th>
+				<td colspan="3">{{board.prcpCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">추가단서사항</th>
+				<td colspan="3">{{board.aditRscn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">참여제한대상</th>
+				<td colspan="3">{{board.prcpLmttTrgtCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">신청절차</th>
+				<td colspan="3">{{board.rqutProcCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">제출서류</th>
+				<td colspan="3">{{board.pstnPaprCn}}</td>
+			</tr>
+            <tr>
+				<th scope="row">참고사이트</th>
+				<td colspan="3">{{board.rfcSiteUrla1}}<br>{{board.rfcSiteUrla2}}</td>
+			</tr>
+            <tr>
+                    <th scope="row">기타사항</th>
+                    <td colspan="3">{{board.etct}}</td>
+                </tr>
+		</tbody>
+	    </table>
+        </div>
+        <div id="policy_box2">
+        <table>
+            <colgroup>
+                <col style="width: 130px">
+                <col style="width: auto,">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th scope="row">주관부처명</th>
+                    <td>{{board.mngtMson}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">담당자이름</th>
+                    <td>{{board.mngtMrofCherCn}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">담당자연락처</th>
+                    <td>{{board.cherCtpcCn}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <colgroup>
+                <col style="width: 130px">
+                <col style="width: auto,">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th scope="row">운영기관명</th>
+                    <td>{{board.cnsgNmor}}</td>
+                </tr>
+                <tr>
+                    <th scope="row">담당자연락처</th>
+                    <td>{{board.tintCherCtpcCn}}</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        <button onclick="history.back();">돌아가기</button>
+{% endblock %}

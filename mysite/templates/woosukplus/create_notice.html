@@ -1,0 +1,39 @@
+<!-- 글작성 -->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+   <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+{% endblock %}
+{% block content %}
+
+    <h1>공지사항</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class = "board_write">
+        <div class="title">
+        <p>
+            <label for="id_title"></label>
+            <span>제목</span>
+            <input type="text"  name="title" required id = "id_title">
+
+        </p>
+
+        </div>
+        <div class="cont">
+        <p>
+            <label for="id_content"></label><br>
+            <textarea name = "content" cols="30" rows="20" required id = "id_content">
+
+            </textarea>
+        </p>
+            </div>
+        </div>
+        <div class="bt_wrap">
+        <span class = "bt_list"><a href="{% url 'noticeboard' %}"><button>목록</button></a></span>
+        <span class="bt_submit"><button type="submit">글 작성</button></span>
+        </div>
+    </form>
+
+{% endblock %}
+
+

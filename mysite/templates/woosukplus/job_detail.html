@@ -1,0 +1,42 @@
+<!--직업정보상세-->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/job_detail_style.css' %}">
+{% endblock %}
+{% block content %}
+            <h1>직업정보</h1>
+            <table>
+		<colgroup>
+			<col style="width: 150px">
+			<col style="width: auto,">
+			<col style="width: 140px">
+			<col style="width: 20%">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th scope="row">직업명</th>
+				<td>{{board.job_nm}}</td>
+				<th scope="row">직업군</th>
+                <td>-{{board.top_nm}}<br>-{{board.aptit_name}}</td>
+			</tr>
+			<tr>
+				<th scope="row">관련직업</th>
+				<td colspan="3">{{board.rel_job_nm}}</td>
+			</tr>
+			<tr>
+				<th scope="row">하는일</th>
+				<td colspan="3">{{board.work}}</td>
+				</tr>
+			<tr>
+			<tr>
+                <th scope="row">연봉</th>
+                <td>{{board.wage}}</td>
+                <th scope="row">전망</th>
+                <td>{{board.wlb}}</td>
+			</tr>
+		</tbody>
+	</table>
+        <button onclick="history.back();">돌아가기</button>
+            {% endblock %}

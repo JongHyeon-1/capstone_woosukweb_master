@@ -1,0 +1,125 @@
+<!--청년제도-->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/youthpolicy_style.css' %}">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+{% endblock %}
+{% block content %}
+
+            <h1>청년제도</h1>
+            <div id="search_tab">
+                <label>키워드 검색</label>
+                <input type="text" name="input_search" id="input_search">
+                <button id="search_btn" type="button">검 색</button>
+            </div>
+
+            <div id="policy_container">
+                <div>
+                <ui id="policy"></ui>
+                </div>
+                <div id="authorship"><p>❮출처:온통청년❯</p></div>
+            </div>
+            <div id="pagebutton">
+                <ul><button id="pagebutton_previous">&#10094;이전</button></ul>
+                <ul><a id="pagebutton_this"></a></ul>
+                <ul><button id="pagebutton_next">다음&#10095;</button></ul>
+            </div>
+{% endblock %}
+{% block js %}
+    <script>
+var pageIndex = 1;
+var totalpage;
+$(document).ready(function() {
+            search_ajax();
+
+});
+$("#input_search").on('keydown',function(event) {
+        if (event.keyCode === 13) {
+            search_ajax();
+        }
+});
+$("#search_btn").click(function() {
+       pageIndex = 1;
+       search_ajax();
+});
+function search_ajax() {
+    $.ajax({
+                    url:'{% url 'youthpolicy_search' %}',
+                    dataType:'json',
+                    type:'POST',
+                    data:{'pageIndex':pageIndex, 'search_value':$("#input_search").val()},
+                    headers: { "X-CSRFToken": '{{csrf_token}}' },
+                    success:function(json){
+                        datalist(json.value.youthPolicy, json.search_value);
+                        pageIndex = json.pageIndex;
+                        pagingbutton(json.value.totalCnt, json.value.youthPolicy.length);
+                    },
+                    error : function(result){
+                        alert('정보를 불러오지 못했습니다');
+                    }
+            });
+}
+function datalist(value, search_value) {
+    var policy = document.getElementById("policy");
+    policy.innerHTML = ''
+    for (var i = 0; i < value.length; i++ ) {
+    policy.innerHTML +=
+    '<a href=' + "youthpolicy_detail/" + pageIndex + '&' + value[i].bizId + '&' + search_value + '>' +
+    '<li>' +
+    '<h3>' + value[i].polyBizSjnm + '</h3>' +
+    '<div class="policy_container_info">' +
+    '<div>연령제한  ('+ value[i].ageInfo +')</div>' +
+    '<div>운영기관명  ('+ value[i].cnsgNmor +')</div>' +
+    '</div>' +
+    '</li>' +
+    '</a>';
+    }
+}
+function pagingbutton(count, pagesize) {
+    totalpage = (count / pagesize);
+    var pagebutton_previous = document.getElementById("pagebutton_previous");
+    var pagebutton_this = document.getElementById("pagebutton_this");
+    var pagebutton_next = document.getElementById("pagebutton_next");
+    pagebutton_previous.style.display = "none";
+    pagebutton_next.style.display = "none";
+    if (pageIndex > 1) {
+        pagebutton_previous.style.display = "block";
+    }
+    pagebutton_this.innerHTML = pageIndex;
+    if (pageIndex < totalpage){
+        pagebutton_next.style.display = "block";
+    }
+}
+$("#pagebutton_next").click(function() {
+    if (pageIndex < totalpage) {
+        pageIndex++;
+        search_ajax();
+    }
+
+});
+$("#pagebutton_previous").click(function() {
+    if (pageIndex > 1) {
+        pageIndex--;
+        search_ajax();
+    }
+
+});
+function adjustMainMinWidth() {
+            var policy_container = document.getElementById('policy_container');
+            var windowWidth = window.innerWidth || document.documentElement.clientWidth;
+
+
+            if (windowWidth < 1300) {
+                policy_container.style.width = '800px';
+            } else {
+                policy_container.style.width = '100%';
+            }
+        }
+
+        window.addEventListener('resize', adjustMainMinWidth);
+
+        window.addEventListener('load', adjustMainMinWidth);
+        </script>
+{% endblock %}

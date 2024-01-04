@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+{% block content %}
+    <div id="profile-container">
+        <h2>회원 정보 수정</h2>
+         <form method="post" action="{% url 'edit_profile' %}">
+            {% csrf_token %}
+            <label for="{{ form.username.id_for_label }}">사용자명:</label>
+            {{ form.username }}
+            <br>
+            <br>
+
+
+            <label for="{{ form.email.id_for_label }}">이름:</label>
+            {{ form.name }}
+            <br>
+            <br>
+
+             <label for="{{ form.email.id_for_label }}">핸드폰번호:</label>
+            {{ form.phone_number }}
+            <br>
+            <br>
+
+             <label for="{{ form.email.id_for_label }}">이메일:</label>
+            {{ form.email }}
+            <br>
+            <br>
+
+              <label for="{{ form.email.id_for_label }}">성별:</label>
+            {{ form.wk_sex }}
+            <br>
+            <br>
+
+            <button type="submit">저장하기</button>
+        </form>
+        <a href="{% url 'user_profile' %}">돌아가기</a>
+
+    </div>
+{% endblock %}

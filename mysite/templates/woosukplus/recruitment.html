@@ -1,0 +1,51 @@
+<!--채용정보-->
+{% extends "template.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/basic_style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/recruitment_style.css' %}">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+{% endblock %}
+{% block content %}
+            <h1>채용정보</h1>
+            <div id="table_teb">
+            <table>
+                <a name="anchor"></a>
+                <th>기업명</th>
+                <th>구인제목</th>
+			    <th>업무</th>
+                <th>모집요강</th>
+			    <th>마감일</th>
+                {%for i in page_obj %}
+                <tr>
+                    <td>{{i.1}}</td>
+                    <td><a href="{% url 'recruitment_detail' boardid=i.0 %}" class="table_links">{{i.2}}</a></td>
+                    {% if i.3 == None %}
+				    <td>-</td>
+                    {% else %}
+                    <td>{{i.3}}</td>
+                    {%endif%}
+                    <td>{{i.4}}</td>
+                    <td>{{i.5}}</td>
+			    </tr>
+                {%endfor%}
+
+		    </table>
+                <div id="authorship">&#10094;출처:서울열린데이터광장&#10095;</div>
+            </div>
+            <div id="pagebutton">
+                {% if page_obj.has_previous %}
+                <ul><a href="?page={{page_obj.previous_page_number}}#anchor">&#10094;이전</a></ul>
+                {% endif %}
+                {% for page in custom_range %}
+                {% if page == page_obj.number %}
+                <ul><a id="pagebutton_color" href="?page={{page}}#anchor">{{page}}</a> </ul>
+                {% else %}
+                <ul><a href="?page={{page}}#anchor">{{page}}</a> </ul>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <ul ><a href="?page={{page_obj.next_page_number}}#anchor">다음&#10095;</a></ul>
+                {% endif %}
+            </div>
+{% endblock %}
